@@ -8,6 +8,6 @@ FROM node:10-alpine
 WORKDIR /app
 RUN npm install -g webserver.local
 COPY --from=build /app/build ./build
-COPY --from=build /app/node_modules ./node_modules
+
 EXPOSE 3000
 CMD webserver.local -d ./build
