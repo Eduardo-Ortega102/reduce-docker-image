@@ -1,13 +1,13 @@
-FROM node:10
-
+FROM node:10-alpine AS build
 WORKDIR /app
-
 COPY app /app
-
-RUN npm install -g webserver.local
-
 RUN npm install && npm run build
 
-EXPOSE 3000
 
+FROM node:10-alpine
+WORKDIR /app
+RUN npm install -g webserver.local
+COPY --from=build /app/build ./build
+COPY --from=build /app/node_modules ./node_modules
+EXPOSE 3000
 CMD webserver.local -d ./build
