@@ -4,10 +4,8 @@ COPY app /app
 RUN npm install && npm run build
 
 
-FROM node:10-alpine
-WORKDIR /app
-RUN npm install -g webserver.local
-COPY --from=build /app/build ./build
+FROM nginx:stable-alpine
+COPY --from=build /app/build /usr/share/nginx/html
 
-EXPOSE 3000
-CMD webserver.local -d ./build
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
